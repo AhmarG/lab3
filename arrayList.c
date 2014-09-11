@@ -8,11 +8,12 @@ static int getSize(primitiveType type);
 
 arrayList * initialize(primitiveType type)
 {
-    arrayList * newList = malloc(sizeof(arrayList));
+    arrayList * newList = (arrayList*) malloc(sizeof(arrayList));
     newList->elementSize = getSize(type);
     newList->numElements = 0;
-    newList->arraySize = 10;
+    newList->arraySize = 4;
     newList->type = type;
+    newList->array = (void*) malloc(4 * newList->elementSize);
     return newList;
 }
 
@@ -32,7 +33,7 @@ void addElement(arrayList * arylstP, void * element)
 {
     if(arylstP->numElements >= arylstP->arraySize)
     {
-        char * newArray = malloc((sizeof(getSize(arylstP->type)) *2) *arylstP->numElements);
+        char * newArray = malloc(((arylstP->elementSize) *2) *arylstP->numElements);
         int i;
         for(i = 0; i < (arylstP->elementSize*arylstP->numElements); i++)
         {
@@ -54,6 +55,8 @@ void addElement(arrayList * arylstP, void * element)
     {
         ((short*)arylstP->array)[arylstP->numElements] = *((short*)element);
     }
+    else
+        return;
     arylstP->numElements++;
 }
 
@@ -65,9 +68,20 @@ void removeElement(arrayList * arylstP, int index)
    int i;
    for(i = index; i < arylstP->arraySize - 1; i++)
    {
-      // arylstP->array[i] = arylstP->array[i+1];
+         if(arylstP->type == intType)
+         {
+             ((int*)arylstP->array)[i] = ((int*)arylstP->array)[i+1];
+         }
+         else if(arylstP->type == charType)
+         {
+             ((char*)arylstP->array)[i] = ((char*)arylstP->array)[i+1];
+         }
+         else if(arylstP->type == shortType)
+         {
+             ((short*)arylstP->array)[i] = ((short*)arylstP->array)[i+1];
+         }
    }
-   arylstP->arraySize--;
+   arylstP->numElements--;
 }
       
 
@@ -81,10 +95,8 @@ void printArray(arrayList * arylstP)
       if (arylstP->type == charType)
          printf("%02x ",(((char*)arylstP->array)[i])& 0xff);
       else if (arylstP->type == shortType)
-         //fill in the missing code that gets the element and &s it with 0xffff
          printf("%04x ", (((short*)arylstP->array)[i]) & 0xffff);
       else if (arylstP->type == intType)
-         //fill in the missing code that gets the element and &s it with 0xffffffff
          printf("%08x ", (((int*)arylstP->array)[i]) & 0xffffffff);
    }
    printf("\n");
