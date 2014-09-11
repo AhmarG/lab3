@@ -2,10 +2,31 @@
 #include <stdio.h>
 #include "arrayList.h"
 
+/*
+ *This program implements a dynamically memory allocated array
+ *in C compareable to Java's ArrayList
+ *
+ *
+ * Author: Ahmar Gordon
+ * UserID: gordona
+ */
+
+
+
 //getSize not accessed outside of this file so declare it to be static
 //static essentially makes it private to this file 
 static int getSize(primitiveType type);
+//----------------------------------------------------------------------
 
+/*
+ *initialize - creates an instance of the arrayList struct for use
+ *
+ * Params:
+ *      type - the data type the list will contain.
+ *
+ * Returns:
+ *       pointer to the new struct.
+ */
 arrayList * initialize(primitiveType type)
 {
     arrayList * newList = (arrayList*) malloc(sizeof(arrayList));
@@ -17,6 +38,14 @@ arrayList * initialize(primitiveType type)
     return newList;
 }
 
+/*
+ *getSize - calculates the size in bytes of a primitive type.
+ *
+ *Params:
+ *      type - your desired data type
+ *
+ * Returns - number of bytes the data type contains.
+ */
 int getSize(primitiveType type)
 {
     if(type == shortType)
@@ -29,6 +58,14 @@ int getSize(primitiveType type)
         return 0;
 }
 
+/*
+ *addElement - Adds an element to the list. If there isn't
+ *             enough space in the array, more is allocated.
+ *
+ * Params:
+ *      *arylstP - pointer to arrayList struct
+ *      *element - pointer to element to be added
+ */
 void addElement(arrayList * arylstP, void * element)
 {
     if(arylstP->numElements >= arylstP->arraySize)
@@ -60,6 +97,14 @@ void addElement(arrayList * arylstP, void * element)
     arylstP->numElements++;
 }
 
+/*
+ *removeElement - Removes an element at a given index of the
+ *                list. Does nothing if index is out of bounds.
+ *
+ *Params:
+ *      *arylstP - pointer to arrayList struct
+ *      index - index of array in arrayList
+ */
 void removeElement(arrayList * arylstP, int index)
 {
    if(index < 0 || index > arylstP->arraySize)
@@ -84,7 +129,10 @@ void removeElement(arrayList * arylstP, int index)
    arylstP->numElements--;
 }
       
-
+/*
+ *printArray - prints out the array correctly depending on
+ *             the type of data it contains
+ */
 void printArray(arrayList * arylstP)
 {
    int i;
